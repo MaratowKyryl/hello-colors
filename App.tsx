@@ -1,12 +1,7 @@
 import { useFonts } from "expo-font";
-import { useState } from "react";
-import { Pressable, StyleSheet } from "react-native";
-import Animated, {
-  runOnJS,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from "react-native-reanimated";
+import { useRef, useState } from "react";
+import { Button, StyleSheet, TextInput, View } from "react-native";
+import { runOnJS, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
 
 import { generateRandomColorRGB, getOppositeColorRGB } from "./src/utils/colors";
 
@@ -14,6 +9,7 @@ export default function App() {
   const [loaded] = useFonts({
     Pacifico: require("./assets/fonts/Pacifico-Regular.ttf"),
   });
+  const textInputRef = useRef<TextInput>();
   const [bgColor, setBgColor] = useState(generateRandomColorRGB());
   const [newColor, setNewColor] = useState(generateRandomColorRGB());
   const positionX = useSharedValue(-100);
@@ -48,12 +44,10 @@ export default function App() {
     return null;
   }
   return (
-    <Pressable onPressIn={handlePressIn} style={[styles.container, { backgroundColor: bgColor }]}>
-      <Animated.View
-        style={[styles.animatedView, newColorAnimatedStyle, { backgroundColor: newColor }]}
-      />
-      <Animated.Text style={[styles.message, { color: textColor }]}>Hello there</Animated.Text>
-    </Pressable>
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <TextInput style={{ width: 200, height: 40, borderWidth: 1 }} ref={textInputRef} />
+      <Button title="PRESS" onPress={() => console.log(textInputRef.current?.context)} />
+    </View>
   );
 }
 
